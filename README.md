@@ -24,7 +24,8 @@
 ```bash
 ❯  echo "test content"
 test content
-❯ echo "test content" | git hash-object --stdin
+## creating a new blob object and store it 
+❯ echo "test content" | git hash-object --stdin -w
 d670460b4b4aece5915caf5c68d12f560a9fe3e4
 ❯ git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4
 test content
