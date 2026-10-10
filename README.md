@@ -27,8 +27,12 @@ test content
 ## creating a new blob object and store it 
 ❯ echo "test content" | git hash-object --stdin -w
 d670460b4b4aece5915caf5c68d12f560a9fe3e4
+
+## reading the blob object
 ❯ git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4
 test content
+
+## checking the file type of that object
 ❯ git cat-file -t d670460b4b4aece5915caf5c68d12f560a9fe3e4
 blob
 ❯ git cat-file -t d670460b4b4aece5915caf5c68d12f560a9fe3e4
@@ -38,6 +42,7 @@ blob
 [main 83ea7e1] new commands included in the README file
  1 file changed, 33 insertions(+)
 ❯ echo "version 1" > test.txt
+## creating new file and store its hash into .git/objects
 ❯ git hash-object test.txt -w
 83baae61804e65cc73a7201a7252750c76066a30
 ❯ tree .git/objects
@@ -101,5 +106,96 @@ blob
 ❯ git cat-file -p 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
 version 2
 ❯ git cat-file -p 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a > test.txt
+
+
+
+
+  ~/Medium/github-repo-test on   main ⇡2 !1 ❯ git update-index --add --cacheinfo 100644 
+  ~/Medium/github-repo-test on   main ⇡2 !1 ❯ git update-index --add --cacheinfo 100644
+  ~/Medium/github-repo-test on   main ⇡2 !1 ❯ git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt
+❯ git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt
+❯ git status                
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+                                                                               
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   test.txt                                     
+                                                                               
+Changes not staged for commit:                                  
+  (use "git add/rm <file>..." to update what will be committed)                                                                                                
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.md
+        deleted:    test.txt                       
+                                                                               
+❯ git write-tree
+1811a308a44c8ae9544af006839cc6bee665bc9c
+❯ git cat-file -t 1811a3                           
+tree                        
+❯ git cat-file -p 1811a3
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob 83baae61804e65cc73a7201a7252750c76066a30    test.txt       
+❯ git update-index --add --cacheinfo 100644 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a test.txt
+❯ git status                
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+                                                                               
+Changes to be committed:                
+  (use "git restore --staged <file>..." to unstage)       
+        new file:   test.txt                                     
+                                                                               
+Changes not staged for commit:                                 
+  (use "git add/rm <file>..." to update what will be committed) 
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.md                                    
+        deleted:    test.txt                                      
+                                                                               
+❯ echo "new file" > new.txt                                     
+❯ git update-index --add new.txt                          
+❯ git write-tree                                                 
+def47b825cbfcf9682125311abf22a2ecae57417                          
+❯ git cat-file -p def47b825cbfcf9682125311abf22a2ecae57417      
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md              
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt             
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new.txt                
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a    test.txt
+❯ git cat-file -p def47b825cbfcf9682125311abf22a2ecae57417       
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md 
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new.txt 
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a    test.txt
+❯ git cat-file -p 1811a308a44c8ae9544af006839cc6bee665bc9c       
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md 
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob 83baae61804e65cc73a7201a7252750c76066a30    test.txt
+❯                                                                              
+❯                                                                              
+❯                                                                              
+❯ git cat-file -p def47b825cbfcf9682125311abf22a2ecae57417
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new.txt
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a    test.txt
+❯ git cat-file -p def47b825cbfcf9682125311abf22a2ecae57417
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new.txt 
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a    test.txt   
+
+
+❯ git cat-file -p def47b825cbfcf9682125311abf22a2ecae57417
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new.txt
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a    test.txt
+❯ git cat-file -p 1811a308a44c8ae9544af006839cc6bee665bc9c
+100644 blob ea5bfee17d5b29c27f181d2d0c8de801ae3aba89    README.md
+100644 blob ed5a7803ae42fa34d3583cb3ecd8ed851b09a21b    file-1.txt
+100644 blob 83baae61804e65cc73a7201a7252750c76066a30    test.txt
+❯ git restore .                                           
+
 
 ```
